@@ -1,6 +1,6 @@
 #include<iostream> 
 #include <string> 
-
+#include <stdlib.h>
 #include "FunGen.h"
 using namespace std;
 
@@ -33,10 +33,12 @@ int main()
 	index = actual.Imprimir('M'); // Imprime las materias
 
 	cin >> materia;
-
+	limpiarTerminal();
 	actual.Imprimir('I', stoi(materia));
 
 	cin >> menu;
+
+	limpiarTerminal();
 	
 	actual.MenuMaterias(stoi(menu),stoi(materia));
 

@@ -1,0 +1,3 @@
+D21M11A19H24m00
+La tarea 1 consiste en resolver la integral para obtener 16 digitos de presicion
+con multithreads de windows.
