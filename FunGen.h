@@ -21,11 +21,11 @@ using namespace std;
 
 time_t now = time(0);
 
-
+tm *ltm = localtime(&now);
 void limpiarTerminal();
 bool validacionFecha(string fileHandler) { // Valida que las fechas del archivo que se paso sea despues de la fecha actual
 
-	tm *ltm = localtime(&now);
+	
 
 	/*cout << "Year" << 1900 + ltm->tm_year << endl;
 	cout << "Month: " << 1 + ltm->tm_mon << endl;
@@ -45,12 +45,13 @@ bool validacionFecha(string fileHandler) { // Valida que las fechas del archivo 
 	int day=stoi(cadena.substr(1, 2)),month= stoi(cadena.substr(4, 5)),year= stoi("20"+cadena.substr(7, 8)),timeH= stoi(cadena.substr(10, 11)),timem= stoi(cadena.substr(13, 14));
 
 	fe.close();
+	int yearAx = 1900 + ltm->tm_year;
 	
-	if (year < (1900 + ltm->tm_year)) {
-		if (month < (1 + ltm->tm_mon)) {
-			if (day < ltm->tm_mday) {
+	if (year >= (yearAx)) {
+		if (month >= (1 + ltm->tm_mon)) {
+			if (day >= ltm->tm_mday) {
 			
-				if ((timeH*60+ timem) < ((1 + ltm->tm_hour)*60+(1 + ltm->tm_min)) ) {
+				if ((timeH*60+ timem) >= ((1 + ltm->tm_hour)*60+(1 + ltm->tm_min)) ) {
 					return true;
 				
 				}
@@ -92,7 +93,7 @@ void tareasProfesor(string materia) {
 
 }
 
-void tareasAlumno(string materia) {
+void tareasAlumno(string materia,string loggedActual) {
 	const std::string& name = "./Tareas/" + materia;
 	stringvec v;
 	
@@ -117,11 +118,43 @@ void tareasAlumno(string materia) {
 
 	cin >> tarea;
 ///////////////////////////////////
+	string cadena;
+	if (validacionFecha("./Tareas/" + materia + "/" + v[tarea])) {
+		ifstream fe("./Tareas/" + materia + "/" + v[tarea]);
+
+		getline(fe, cadena);
+		//cout << "\n" + cadena + "\n" << endl;
+		cout << "\nDescripcion:\n" << "Fecha de entrega:" + cadena.substr(1, 2) + "/" + cadena.substr(4, 2) + "  " + cadena.substr(10, 2) + ":" + cadena.substr(13, 2) << endl;
+		while (!fe.eof()) {
+			getline(fe, cadena);
+			cout << cadena << endl;
+		}
+
+		cout << "\n0.- Subir Tarea\n1.-Regresar" << endl;
+		fe.close();
+		int menu;
+		cin >> menu;
+		if (menu == 0) { // Subir tarea
+			ofstream myfile;
+			myfile.open("./Tareas/" + materia + "/"+ "Resp"+ v[tarea]);
+			string aux = (loggedActual + to_string( ltm->tm_mday) + "/" + to_string(1 + ltm->tm_mon) + " " + to_string(1 + ltm->tm_hour) + ":" + to_string(1 + ltm->tm_min) +"\n");
+			myfile <<aux ;
+			myfile.close();
+		
+		}
+	}
+	else {
+		cout << "La tarea ya excedio su tiempo para subirla" << endl;
+		cout << "\n0.-Regresar" << endl;
+		cin >> tarea;
+		///////////////////////regresar
+	}
+
 	
-	validacionFecha("./Tareas/" + materia+"/"+ v[tarea]);
 
 
-		cout << "\n0.- subir tarea" << "\n1.- regresar" << endl;
+
+
 }
 
 void quizzesAlumno() {

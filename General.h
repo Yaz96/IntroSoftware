@@ -5,7 +5,7 @@
 #include "FunGen.h"
 
 using namespace std;
-void tareasAlumno(string materia);
+void tareasAlumno(string materia, string loggedActual);
 void tareasProfesor(string materia);
 void quizzesAlumno();
 void quizzesProfesor();
@@ -54,7 +54,7 @@ public:
 				cout<<cadena<<endl;
 			}
 
-			cout << "\n0.- Tareas\n" << "1.- Quizzes\n" << "2.- Foros de Discucioin\n" <<"3.- Regresar\n" <<endl;
+			cout << "\n0.- Tareas\n" << "1.- Quizzes\n" << "2.- Foros de Discusion\n" <<"3.- Regresar\n" <<endl;
 
 			break;
 	
@@ -69,7 +69,7 @@ public:
 		switch (menu) {
 		case 0:
 			if (!priv[this->UserIndex]) { //si es alumno lo mandara a una funcion especial para el alumno en las tareas
-				tareasAlumno(Materias[materia]);
+				tareasAlumno(Materias[materia], this->loggedActual);
 			}
 			else { 
 				tareasProfesor(Materias[materia]); // si es profesor lo mandara a una funcion especial para el profesor para las tareas
