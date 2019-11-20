@@ -16,9 +16,9 @@ int main()
 	string pwd;
 
 	while (actual.logged == false) {
-		cout << "Bienvenido a BlackBoard\n¿Cual es su usuario?" << endl;
+		cout << "Bienvenido a BlackBoard\nÂ¿Cual es su usuario?" << endl;
 		cin >> usuario;
-		cout << "Contraseña: ";
+		cout << "ContraseÃ±a: ";
 		cin >> pwd;
 
 		actual = iniSesion(usuario, pwd);
