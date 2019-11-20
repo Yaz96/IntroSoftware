@@ -3,7 +3,16 @@
 #include <string> 
 #include "General.h"
 #include <sys/types.h>
+
+#if defined(_WIN32)
 #include "dirent.h"
+#elif defined(_WIN64)
+#include "dirent.h"
+#elif defined(__linux__)
+#include <dirent.h>
+#elif defined(__unix__) || !defined(__APPLE__) && defined(__MACH__)
+#include <dirent.h>
+#endif
 #include <vector>
 #include <ctime>
 typedef std::vector<std::string> stringvec;
@@ -86,6 +95,9 @@ void tareasProfesor(string materia) {
 void tareasAlumno(string materia) {
 	const std::string& name = "./Tareas/" + materia;
 	stringvec v;
+#if defined(_WIN32)|| defined(_WIN64)
+	
+
 	DIR* dirp = opendir(name.c_str());
 	struct dirent * dp;
 	string aux;
@@ -95,6 +107,25 @@ void tareasAlumno(string materia) {
 			v.push_back(dp->d_name);
 	}
 	closedir(dirp);
+#elif defined(__unix__) || !defined(__APPLE__) && defined(__MACH__)
+	string dir; 
+	DIR *dp;
+	struct dirent *dirp;
+	if ((dp = opendir(name.c_str())) == NULL) {
+		cout << "Error(" << errno << ") opening " << dir << endl;
+		return errno;
+}
+
+	while ((dirp = readdir(dp)) != NULL) {
+		v.push_back(string(dirp->d_name));
+	}
+	closedir(dp);
+	return 0;
+
+
+
+#endif
+	
 	limpiarTerminal();
 	for (int i = 0; i < v.size(); i++) {
 		cout << to_string(i) + ".-" << v[i] << endl;
