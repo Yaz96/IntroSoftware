@@ -90,7 +90,48 @@ User iniSesion(string usuario, string pwd) {
 }
 
 void tareasProfesor(string materia) {
+	int iAccion;
+	string sNombre, sDescripcion, aux;
+	ifstream iEntrada;
 
+	cout << "1.Ver tareas" << endl;
+	cout << "2. Crear tarea" << endl;
+	cin >> iAccion;
+
+	if (iAccion == 1) {
+		const std::string& name = "./Tareas/" + materia;
+		stringvec v;
+		DIR* dirp = opendir(name.c_str());
+		struct dirent * dp;
+		string aux;
+		while ((dp = readdir(dirp)) != NULL) {
+			aux = dp->d_name;
+			if (aux != "." && aux != "..")
+				v.push_back(dp->d_name);
+		}
+		closedir(dirp);
+
+		for (int i = 0; i < v.size(); i++) {
+			cout << to_string(i) + ".-" << v[i] << endl;
+		}
+
+	}
+	else {
+		ofstream ofSalida;
+		cout << "Ingresa el nombre de la tarea" << endl;
+		cin >> sNombre;
+		sNombre = "Tareas/" + materia +"/"+ sNombre + ".txt";
+		ofSalida.open(sNombre);
+
+		cout << "Ingresa la fecha limite con el formato D##M##A##H##m## " << endl;
+		cin >> aux;
+		cout << "Ingresa la descripcion" << endl;
+		cin.ignore();
+		getline(cin, sDescripcion);
+		
+		ofSalida << aux +"\n"+ sDescripcion;
+		ofSalida .close();
+	}
 }
 
 void tareasAlumno(string materia,string loggedActual) {
@@ -103,7 +144,7 @@ void tareasAlumno(string materia,string loggedActual) {
 	string aux;
 	while ((dp = readdir(dirp)) != NULL) {
 		aux = dp->d_name;
-		if (aux != "." && aux != "..")
+		if (aux != "." && aux != ".." && aux.substr(0,3) != "Res")
 			v.push_back(dp->d_name);
 	}
 	closedir(dirp);
@@ -157,10 +198,86 @@ void tareasAlumno(string materia,string loggedActual) {
 
 }
 
-void quizzesAlumno() {
+void quizzesAlumno(string materia, string loggedActual) {
+	const std::string& name = "./Tareas/" + materia;
+	stringvec v;
+
+
+	DIR* dirp = opendir(name.c_str());
+	struct dirent * dp;
+	string aux;
+	while ((dp = readdir(dirp)) != NULL) {
+		aux = dp->d_name;
+		if (aux != "." && aux != ".." && aux.substr(0, 3) != "Res")
+			v.push_back(dp->d_name);
+	}
+	closedir(dirp);
+
+
+	limpiarTerminal();
+	for (int i = 0; i < v.size(); i++) {
+		cout << to_string(i) + ".-" << v[i] << endl;
+	}
+
+	int tarea;
+
+	cin >> tarea;
 
 }
-void quizzesProfesor() {
+void quizzesProfesor(string materia) {
+	int iAccion;
+	string sNombre, sDescripcion,aux;
+
+	cout << "1.Ver quizzes" << endl;
+	cout << "2.Crear quizz" << endl;
+	cin >> iAccion;
+
+	if (iAccion == 1) {
+
+		const std::string& name = "./Quizzes/" + materia;
+		stringvec v;
+		DIR* dirp = opendir(name.c_str());
+		struct dirent * dp;
+		string aux;
+		while ((dp = readdir(dirp)) != NULL) {
+			aux = dp->d_name;
+			if (aux != "." && aux != "..")
+				v.push_back(dp->d_name);
+		}
+		closedir(dirp);
+
+		for (int i = 0; i < v.size(); i++) {
+			cout << to_string(i) + ".-" << v[i] << endl;
+		}
+	}
+	else {
+		ofstream ofSalida;
+		cout << "Ingresa el nombre del quizz." << endl;
+		cin >> sNombre;
+		ofSalida.open("Quizzes/" + materia + "/" + sNombre + ".txt");
+		cout << "Ingresa la fecha limite con el formato D##M##A##H##m## " << endl;
+		cin >> aux;
+		ofSalida << aux + "\n";
+		cin.ignore();
+		cout << "Ingresa las preguntas con sus posibles respuestas. (Sal del modo de escritura escribiendo z)" << endl;
+		getline(cin, sDescripcion);
+		while (sDescripcion != "z") {
+			ofSalida << sDescripcion+"\n";
+			//cin.ignore();
+			getline(cin, sDescripcion);
+			}
+	
+		ofSalida.close();
+		ofSalida.open("Quizzes/" + materia + "/" + "Resp" + sNombre + ".txt");
+		cout << "Ingresa las respuestas del quizz. (Sal del modo de escritura escribiendo z)" << endl;
+		getline(cin, sDescripcion);
+		while (sDescripcion != "z") {
+			ofSalida << sDescripcion + "\n";
+			getline(cin, sDescripcion);
+		}
+		ofSalida.close();
+
+	}
 
 }
 void forosAlumno() {
@@ -185,3 +302,8 @@ void limpiarTerminal() {
 
 }
 
+bool file_exist(char *filename)
+{
+	struct stat   buffer;
+	return (stat(filename, &buffer) == 0);
+}

@@ -4,13 +4,15 @@
 #include <fstream>
 #include "FunGen.h"
 
+
 using namespace std;
 void tareasAlumno(string materia, string loggedActual);
 void tareasProfesor(string materia);
-void quizzesAlumno();
-void quizzesProfesor();
+void quizzesAlumno(string materia, string loggedActual);
+void quizzesProfesor(string materia);
 void forosAlumno();
 void forosProfesor();
+bool file_exist(char *filename);
 
 class User {
 private:
@@ -47,11 +49,18 @@ public:
 		case 'I':
 			cout << "Avisos!" << endl;
 			string materia = "avisos/"+ Materias[numMateria] + ".txt";
-			ifstream fe(materia);
+			char* mataux = &materia[0];
+			if (file_exist(mataux))
+			{
+				ifstream fe(materia);
 
-			while (!fe.eof()) {
-				getline(fe, cadena);
-				cout<<cadena<<endl;
+				while (!fe.eof()) {
+					getline(fe, cadena);
+					cout << cadena << endl;
+				}
+			}
+			else {
+				cout << "\nNo hay avisos disponibles para desplegar\n" << endl;
 			}
 
 			cout << "\n0.- Tareas\n" << "1.- Quizzes\n" << "2.- Foros de Discusion\n" <<"3.- Regresar\n" <<endl;
@@ -78,11 +87,11 @@ public:
 		case 1:
 			if (!priv[this->UserIndex]) { 
 
-				quizzesAlumno();
+				quizzesAlumno(Materias[materia], this->loggedActual);
 
 			}
 			else {
-				quizzesProfesor(); 
+				quizzesProfesor(Materias[materia]);
 			}
 
 			break;

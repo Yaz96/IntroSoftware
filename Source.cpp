@@ -16,6 +16,7 @@ int main()
 	string pwd;
 
 	while (actual.logged == false) {
+		limpiarTerminal();
 		cout << "Bienvenido a BlackBoard\n¿Cual es su usuario?" << endl;
 		cin >> usuario;
 		cout << "Contraseña: ";
