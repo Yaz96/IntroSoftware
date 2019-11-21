@@ -201,6 +201,7 @@ void tareasAlumno(string materia,string loggedActual) {
 void quizzesAlumno(string materia, string loggedActual) {
 	const std::string& name = "./Tareas/" + materia;
 	stringvec v;
+	string respuestas;
 
 
 	DIR* dirp = opendir(name.c_str());
@@ -219,9 +220,59 @@ void quizzesAlumno(string materia, string loggedActual) {
 		cout << to_string(i) + ".-" << v[i] << endl;
 	}
 
-	int tarea;
+	int quizz;
 
-	cin >> tarea;
+	cin >> quizz;
+
+	string cadena;
+	if (validacionFecha("./Quizzes/" + materia + "/" + v[quizz])) {
+		ifstream fe("./Tareas/" + materia + "/" + v[quizz]);
+
+		getline(fe, cadena);
+		//cout << "\n" + cadena + "\n" << endl;
+		cout  << "Fecha de entrega:" + cadena.substr(1, 2) + "/" + cadena.substr(4, 2) + "  " + cadena.substr(10, 2) + ":" + cadena.substr(13, 2) <<"\nPreguntas: \n"<< endl;
+		while (!fe.eof()) {
+			getline(fe, cadena);
+			cout << cadena << endl;
+		}
+
+		cout << "\n0.- Responder Quizz\n1.-Regresar" << endl;
+		fe.close();
+		int menu;
+		cin >> menu;
+		if (menu == 0) { // responderquizz tarea
+			ofstream myfile;
+			myfile.open("./Quizzes/" + materia + "/"+ "Provicional.txt");
+			getline(cin, respuestas);
+		while (respuestas != "z") {
+			myfile << respuestas + "\n";
+			getline(cin, respuestas);
+			}
+			myfile.close();
+
+		/// revisar el quizz
+		ifstream alumno("./Quizzes/" + materia + "/"+ "Provicional.txt");
+		string auxc = "./Tareas/" + materia + "/" +"Resp"+ v[quizz];
+		ifstream Respuestas(auxc);
+
+
+
+
+
+
+		}
+
+	}
+	else {
+		cout << "La tarea ya excedio su tiempo para subirla" << endl;
+		cout << "\n0.-Regresar" << endl;
+		cin >> tarea;
+
+	}
+	///////// regresar
+
+
+
 
 }
 void quizzesProfesor(string materia) {
