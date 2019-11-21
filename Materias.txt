@@ -2,7 +2,7 @@ Clemente
 Arquitectura_de_computadoras
 Multiprocesadores
 Laboratorio_de_Control
-none
+Vision_para_robots
 none
 none
 none
@@ -11,9 +11,9 @@ none
 none
 Joaquin
 Vision_para_robots
-Introduccion_a_la_vida_profesional
-Introduccion_a_la_ingenieria_de_software
-none
+Arquitectura_de_computadoras
+Multiprocesadores
+Laboratorio_de_Control
 none
 none
 none

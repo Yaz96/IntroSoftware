@@ -6,10 +6,10 @@ using namespace std;
 
 // User iniSesion( string usuario, string psw);
 User actual;
-
+char globMenu;
 int main()
 {
-	
+
 
 
 	string usuario;
@@ -29,22 +29,32 @@ int main()
 
 	string menu, materia;
 	int index;
-	cout << "Materias:\n" << endl;
+	do {
+		do {
+			limpiarTerminal();
+			cout << "Materias:\n" << endl;
 
-	index = actual.Imprimir('M'); // Imprime las materias
+			index = actual.Imprimir('M'); // Imprime las materias
 
-	cin >> materia;
-	limpiarTerminal();
-	actual.Imprimir('I', stoi(materia));
+			cin >> materia;
 
-	cin >> menu;
+			limpiarTerminal();
+			actual.Imprimir('I', stoi(materia)); // Imprime las opciones de contenido de una materia
+		//
 
-	limpiarTerminal();
+			cin >> menu;
+			menu = (menu == "r") ? "-1" : menu;
+			limpiarTerminal();
+		} while (menu == "-1");
+
+		actual.MenuMaterias(stoi(menu), stoi(materia));
+	} while (true);
+
+	/*switch (globMenu) :
+	{
+		case
 	
-	actual.MenuMaterias(stoi(menu),stoi(materia));
-
-
-
+	}*/
 
 	return 0;
 }

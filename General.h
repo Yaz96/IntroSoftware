@@ -10,8 +10,9 @@ void tareasAlumno(string materia, string loggedActual);
 void tareasProfesor(string materia);
 void quizzesAlumno(string materia, string loggedActual);
 void quizzesProfesor(string materia);
-void forosAlumno();
-void forosProfesor();
+void forosAlumno(string materia, string loggedActual);
+void forosProfesor(string materia);
+void AvisosProfe(string materia);
 bool file_exist(char *filename);
 
 class User {
@@ -44,27 +45,33 @@ public:
 				}
 				cout << to_string(i) + ".- " << Materias[i] << endl;
 			}
+			
 
 			break;
 		case 'I':
-			cout << "Avisos!" << endl;
-			string materia = "avisos/"+ Materias[numMateria] + ".txt";
-			char* mataux = &materia[0];
-			if (file_exist(mataux))
-			{
-				ifstream fe(materia);
+			if (numMateria!=-1) {
+				cout << "Avisos!" << endl;
+				string materia = "avisos/" + Materias[numMateria] + ".txt";
+				char* mataux = &materia[0];
+				if (file_exist(mataux))
+				{
+					ifstream fe(materia);
 
-				while (!fe.eof()) {
-					getline(fe, cadena);
-					cout << cadena << endl;
+					while (!fe.eof()) {
+						getline(fe, cadena);
+						cout << cadena << endl;
+					}
 				}
-			}
-			else {
-				cout << "\nNo hay avisos disponibles para desplegar\n" << endl;
-			}
+				else {
+					cout << "\nNo hay avisos disponibles para desplegar\n" << endl;
+				}
 
-			cout << "\n0.- Tareas\n" << "1.- Quizzes\n" << "2.- Foros de Discusion\n" <<"3.- Regresar\n" <<endl;
-
+				cout << "\n0.- Tareas\n" << "1.- Quizzes\n" << "2.- Foros de Discusion" <<  endl;
+				if (priv[this->UserIndex] == 1) {
+					cout << "3.- Avisos" << endl;
+				}
+				cout << "r.- Regresar\n" << endl;
+			}
 			break;
 	
 		}
@@ -75,39 +82,49 @@ public:
 	}
 
 	void MenuMaterias(int menu, int materia) {
-		switch (menu) {
-		case 0:
-			if (!priv[this->UserIndex]) { //si es alumno lo mandara a una funcion especial para el alumno en las tareas
-				tareasAlumno(Materias[materia], this->loggedActual);
-			}
-			else { 
-				tareasProfesor(Materias[materia]); // si es profesor lo mandara a una funcion especial para el profesor para las tareas
-			}
-			break;
-		case 1:
-			if (!priv[this->UserIndex]) { 
+		if (menu != -1) {
+			switch (menu) {
+			case 0:
+				if (!priv[this->UserIndex]) { //si es alumno lo mandara a una funcion especial para el alumno en las tareas
+					tareasAlumno(Materias[materia], this->loggedActual);
 
-				quizzesAlumno(Materias[materia], this->loggedActual);
+				}
+				else {
+					tareasProfesor(Materias[materia]); // si es profesor lo mandara a una funcion especial para el profesor para las tareas
+				}
+				break;
+			case 1:
+				if (!priv[this->UserIndex]) {
+
+					quizzesAlumno(Materias[materia], this->loggedActual);
+
+				}
+				else {
+					quizzesProfesor(Materias[materia]);
+				}
+
+				break;
+			case 2:
+				if (!priv[this->UserIndex]) {
+
+					forosAlumno(Materias[materia], this->loggedActual);
+
+				}
+				else {
+					forosProfesor(Materias[materia]);
+				}
+				break;
+			case 3:
+
+				if (priv[this->UserIndex]) {
+
+					AvisosProfe(Materias[materia]);
+				}
+
+
+				break;
 
 			}
-			else {
-				quizzesProfesor(Materias[materia]);
-			}
-
-			break;
-		case 2:
-			if (!priv[this->UserIndex]) { 
-
-				forosAlumno();
-
-			}
-			else {
-				forosProfesor(); 
-			}
-			break;
-		case 3:
-			break;
-
 		}
 
 	}
